@@ -16,6 +16,8 @@ _ENV_CANDIDATES = (_ORCH_DIR / ".env", _ORCH_DIR.parent / ".env")
 
 
 def _load_dotenv() -> None:
+    """Load first existing .env; values override the process environment so VPS
+    absolute paths in orchestrator/.env win over stale shell exports."""
     for p in _ENV_CANDIDATES:
         if not p.is_file():
             continue
@@ -28,7 +30,7 @@ def _load_dotenv() -> None:
             key, _, val = line.partition("=")
             key = key.strip()
             val = val.strip().strip('"').strip("'")
-            if key and key not in os.environ:
+            if key:
                 os.environ[key] = val
         break
 
