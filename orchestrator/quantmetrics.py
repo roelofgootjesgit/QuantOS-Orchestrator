@@ -55,14 +55,35 @@ def cmd_build(args: argparse.Namespace) -> int:
     root = _require_dir("QUANTBUILD_ROOT")
     python = _quantbuild_python(root)
     config = args.config.strip()
+    env = os.environ.copy()
+    extra = str(root)
+    env["PYTHONPATH"] = f"{extra}{os.pathsep}{env['PYTHONPATH']}" if env.get("PYTHONPATH") else extra
+
+    if getattr(args, "notify_start", False):
+        notify_cmd = [
+            python,
+            "-m",
+            "src.quantbuild.app",
+            "--config",
+            config,
+            "suite-notify",
+            "start",
+            *args.notify_components.split(),
+        ]
+        if args.real:
+            notify_cmd.append("--real")
+        else:
+            notify_cmd.append("--dry-run")
+        print(f"+ {' '.join(notify_cmd)}")
+        rc = int(subprocess.call(notify_cmd, cwd=str(root), env=env))
+        if rc != 0:
+            return rc
+
     cmd = [python, "-m", "src.quantbuild.app", "--config", config, "live"]
     if args.dry_run:
         cmd.append("--dry-run")
     if args.real:
         cmd.append("--real")
-    env = os.environ.copy()
-    extra = str(root)
-    env["PYTHONPATH"] = f"{extra}{os.pathsep}{env['PYTHONPATH']}" if env.get("PYTHONPATH") else extra
     print(f"+ {' '.join(cmd)}")
     print(f"(cwd) {root}")
     return int(subprocess.call(cmd, cwd=str(root), env=env))
@@ -91,6 +112,16 @@ def main() -> int:
     p_build.add_argument("-c", "--config", required=True, help="YAML path relative to QUANTBUILD_ROOT")
     p_build.add_argument("--dry-run", action="store_true", help="Append --dry-run to quantbuild app")
     p_build.add_argument("--real", action="store_true", help="Append --real for live orders")
+    p_build.add_argument(
+        "--notify-start",
+        action="store_true",
+        help="Send Telegram suite-notify start (version + run settings) before live",
+    )
+    p_build.add_argument(
+        "--notify-components",
+        default="build bridge quantlog",
+        help="Words after `suite-notify start` (default: build bridge quantlog)",
+    )
     p_build.set_defaults(func=cmd_build)
 
     p_bridge = sub.add_parser("bridge", help="QuantBridge helpers")
