@@ -37,7 +37,7 @@ Leidende documenten: `QUANT_STACK_MVP_BLUEPRINT.md`, `QUANT_STACK_IMPLEMENTATION
 
 - [x] Schema-validatie (keten-MVP): verplichte `decision_cycle_id` op QuantBuild keten-events + `trade_id` bij `trade_action` ENTER; enums overig nog uitbreiden waar nodig
 - [x] Sequence-validatie (keten-deel): per `decision_cycle_id` exact één `trade_action`, monotone ketenorde (`signal_detected` → `signal_evaluated` → `risk_guard_decision` → `trade_action`); trade lifecycle nog apart
-- [ ] Referential checks: `trade_id`, `order_ref`, `decision_cycle_id` consistent
+- [x] Referential checks (deel): cross-event stabiliteit voor `trade_id` + `order_ref` (run/session/trace + symbol; envelope vs payload gelijk); keten-key overlap op `decision_cycle_id` nog strikt uitbreiden indien gewenst
 - [ ] Minimaal één volledige run / handelsdag draaien + validatierapport
 
 **Repo:** `quantlogv1`
@@ -79,3 +79,4 @@ Leidende documenten: `QUANT_STACK_MVP_BLUEPRINT.md`, `QUANT_STACK_IMPLEMENTATION
 | 2026-04 | QuantBridge: fill-metrics op `OrderLifecycleResult`, canonieke `order_submitted` / `order_filled` via orchestrator + `trade_id` op JSONL (`quantbridgev1`) |
 | 2026-04 | QuantLog: validator + emitter voor keten-`decision_cycle_id` en ENTER-`trade_id`; contract-fixture en tests bijgewerkt (`quantlogv1`) |
 | 2026-04 | QuantLog: sequence-validatie op decision cycle (terminal `trade_action`, duplicaat-blokkade, ketenorde) (`quantlogv1`) |
+| 2026-04 | QuantLog: referentiële correlatie (`trade_id`/`order_ref`) + envelope-payload-afstemming (`quantlogv1`) |
