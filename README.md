@@ -22,32 +22,6 @@ This repository is the **front door**: one place to resolve paths, environment, 
 
 ---
 
-## Suite snapshot
-
-Static badges (update URLs/query strings when you publish new validation numbers):
-
-[![Tests](https://img.shields.io/badge/tests-99%20passing-22c55e?style=flat-square)](docs/SHOWCASE.md)
-[![Profit factor](https://img.shields.io/badge/profit%20factor-5.24-0ea5e9?style=flat-square)](docs/SHOWCASE.md)
-[![Win rate](https://img.shields.io/badge/win%20rate-70%25-8b5cf6?style=flat-square)](docs/SHOWCASE.md)
-[![Max DD](https://img.shields.io/badge/max%20DD-%E2%88%927.1%25-f97316?style=flat-square)](docs/SHOWCASE.md)
-[![FTMO MC](https://img.shields.io/badge/FTMO%20MC%20pass-51.4%25-64748b?style=flat-square)](docs/SHOWCASE.md)
-
-| Metric | Value |
-| --- | --- |
-| Tests | 99 passing |
-| Profit factor | 5.24 |
-| Win rate | 70% |
-| Max drawdown | −7.1% |
-| FTMO Monte Carlo pass rate | 51.4% |
-
-### Equity curve (`quantbuildv1`)
-
-Cumulative R from a reproducible XAUUSD backtest (`strict_prod_v2`, ~5y). Regeneration steps live in the **`quantbuildv1`** README; this copy is for suite-level storytelling when someone lands here first:
-
-![quantbuildv1 backtest equity (cumulative R)](docs/assets/equity_curve_5y.png)
-
----
-
 ## Architecture
 
 ![Quant suite architecture](docs/assets/quantmetrics-suite-architecture.svg)
